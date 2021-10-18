@@ -1,21 +1,12 @@
-/**
- * Autor: Ricardo Soares
- * Data: 16/10/2021
- * **/
-
 package com.gestaopauta.model.entity;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 
-import com.gestaopauta.model.resources.EnumStatusCooperado;
+import com.gestaopauta.model.resources.EnumStatusPauta;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,26 +23,18 @@ import lombok.NoArgsConstructor;
 
 //Define a classe como uma entidade do banco de dados
 @Entity
-public class Cooperado {
-	
+public class Pauta {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	
-	@Column(length = 11)
-	private String cpf;
+	@Column(length = 100)
+	private String titulo;
 	
-	@Column(nullable = false, length = 150)
-	private String nome;
+	@Column(length = 200)
+	private String descricao;
 	
 	@Column
-	private EnumStatusCooperado status;
-	
-	@Column(name = "data_cadastro")
-	private LocalDate dataCadastro;
-	
-	@PrePersist
-	public void PrePersist() {
-		setDataCadastro(LocalDate.now());
-	}
+	private EnumStatusPauta status;
 }
