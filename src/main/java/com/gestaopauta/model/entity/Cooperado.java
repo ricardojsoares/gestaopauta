@@ -38,7 +38,7 @@ public class Cooperado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(length = 11)
+	@Column(nullable = false, length = 11)
 	private String cpf;
 	
 	@Column(nullable = false, length = 150)
@@ -54,5 +54,6 @@ public class Cooperado {
 	@PrePersist
 	public void PrePersist() {
 		setDataCadastro(LocalDate.now());
+		setStatus(EnumStatusCooperado.UNABLE_TO_VOTE);
 	}
 }

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestaopauta.model.entity.Cooperado;
-import com.gestaopauta.model.entity.CooperadoStatus;
 import com.gestaopauta.model.entity.MensagemRetorno;
 import com.gestaopauta.model.repository.CooperadoRepository;
 import com.gestaopauta.model.resources.EnumStatusCooperado;

@@ -1,12 +1,6 @@
-/**
- * Autor: Ricardo Soares
- * Data: 18/10/2021
- * **/
-
 package com.gestaopauta.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.PrePersist;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,25 +27,28 @@ import lombok.NoArgsConstructor;
 
 //Define a classe como uma entidade do banco de dados
 @Entity
-public class SessaoVotacao {
+public class Voto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "datahora_inicio")
-	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-	private LocalDateTime datahoraInicio;
+	@Column(nullable = false, length = 1)
+	private String opcao;
 	
-	@Column
-	private int tempo;
+	@Column(nullable = false, name = "datahota_criacao")
+	private LocalDateTime dataHoraCriacao;
 	
 	@OneToOne
-	@JoinColumn(name="id_pauta")
-	private Pauta pauta;
+	@JoinColumn(name = "id_cooperado")
+	private Cooperado cooperado;
 	
-	@OneToMany(mappedBy = "sessaoVotacao")
-	@JsonIgnoreProperties("sessaoVotacao")
-	private List<Voto> votos;
-
+	@ManyToOne
+	@JoinColumn(name = "id_sessao_votacao")
+	private SessaoVotacao sessaoVotacao;
+	
+	@PrePersist
+	public void prePersiste() {
+		this.setDataHoraCriacao(LocalDateTime.now());
+	}
 }
