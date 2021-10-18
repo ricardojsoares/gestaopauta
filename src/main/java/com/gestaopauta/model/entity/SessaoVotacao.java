@@ -1,3 +1,8 @@
+/**
+ * Autor: Ricardo Soares
+ * Data: 18/10/2021
+ * **/
+
 package com.gestaopauta.model.entity;
 
 import java.time.LocalDateTime;
@@ -10,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,15 +37,17 @@ public class SessaoVotacao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@Column(name = "datahora_inicio")
+	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
 	private LocalDateTime datahoraInicio;
 	
 	@Column
 	private int tempo;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="id_pauta")
 	private Pauta pauta;
+
 }

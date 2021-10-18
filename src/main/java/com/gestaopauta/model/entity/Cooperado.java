@@ -6,7 +6,6 @@
 package com.gestaopauta.model.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gestaopauta.model.resources.EnumStatusCooperado;
 
 import lombok.AllArgsConstructor;
@@ -48,6 +48,7 @@ public class Cooperado {
 	private EnumStatusCooperado status;
 	
 	@Column(name = "data_cadastro")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataCadastro;
 	
 	@PrePersist

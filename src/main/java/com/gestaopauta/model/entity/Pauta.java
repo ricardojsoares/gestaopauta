@@ -1,3 +1,8 @@
+/**
+ * Autor: Ricardo Soares
+ * Data: 16/10/2021
+ * **/
+
 package com.gestaopauta.model.entity;
 
 import java.time.LocalDate;
@@ -9,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gestaopauta.model.resources.EnumStatusPauta;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +48,7 @@ public class Pauta {
 	private EnumStatusPauta status;
 	
 	@Column(name = "data_cadastro")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataCadastro;
 	
 	@PrePersist
