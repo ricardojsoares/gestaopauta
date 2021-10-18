@@ -21,6 +21,7 @@ import com.gestaopauta.model.entity.CooperadoStatus;
 import com.gestaopauta.model.entity.MensagemRetorno;
 import com.gestaopauta.model.repository.CooperadoRepository;
 import com.gestaopauta.model.resources.EnumStatusCooperado;
+import com.gestaopauta.model.resources.Validacoes;
 
 @RestController
 @RequestMapping("/gestaopauta/cooperado")
@@ -38,9 +39,12 @@ public class CooperadoController {
 			return ResponseEntity.status(406).body(new MensagemRetorno(retornoValidacao));
 		}
 
-		Optional<Cooperado> cooperado = coopRepository.findByCpf(coop.getCpf());
+		if(coop.getId() > 0) {
+			return ResponseEntity.status(406).body(new MensagemRetorno("O Id do cooperado não deve ser informado"));
+		}
 		
-		if(cooperado.isPresent()) {
+		Optional<Cooperado> cooperadoCpf = coopRepository.findByCpf(coop.getCpf());
+		if(cooperadoCpf.isPresent()) {
 			return ResponseEntity.status(406).body(new MensagemRetorno("Operação não permitida, já existe um cooperado cadastrado para o CPF " + coop.getCpf()));
 		} else {
 			return ResponseEntity.ok().body(coopRepository.save(coop));	
@@ -98,11 +102,13 @@ public class CooperadoController {
 	private String validaDadosCooperado(Cooperado cooperado) {
 		String retorno = "";
 
-		if (!cooperado.getCpf().matches("\\d{11}")) {
+		if (!Validacoes.validaString(cooperado.getCpf())) {
+			retorno = "CPF não pode ser vazio";
+		} else if (!cooperado.getCpf().matches("\\d{11}")) {
 			retorno = "O CPF deve possuir apenas números e ter 11 caractéres";
 		}
 		
-		if (cooperado.getNome().trim().equals("")) {
+		if (!Validacoes.validaString(cooperado.getNome())) {
 			retorno = retorno + ((retorno.equals(""))? "" : ", ") + "O nome não pode ser vazio";
 		}
 		return retorno;

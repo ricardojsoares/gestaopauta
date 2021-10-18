@@ -1,10 +1,13 @@
 package com.gestaopauta.model.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 import com.gestaopauta.model.resources.EnumStatusPauta;
 
@@ -27,14 +30,23 @@ public class Pauta {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@Column(length = 100)
 	private String titulo;
 	
-	@Column(length = 200)
+	@Column(length = 500)
 	private String descricao;
 	
 	@Column
 	private EnumStatusPauta status;
+	
+	@Column(name = "data_cadastro")
+	private LocalDate dataCadastro;
+	
+	@PrePersist
+	public void PrePersist() {
+		setDataCadastro(LocalDate.now());
+		setStatus(EnumStatusPauta.NONE);
+	}
 }
