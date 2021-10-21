@@ -22,6 +22,9 @@ public class CooperadoServiceImpl implements CooperadoService{
 	@Autowired
 	CooperadoRepository coopRepository;
 	
+	@Autowired
+	ValidaCpfService validaCpfService;
+
 	// Permite inserir um novo cooperado
 	@Override
 	public ResponseEntity<?> create(Cooperado coop) {
@@ -35,6 +38,7 @@ public class CooperadoServiceImpl implements CooperadoService{
 		if(cooperadoCpf.isPresent()) {
 			return ResponseEntity.status(406).body(new MensagemRetorno("Operação não permitida, já existe um cooperado cadastrado para o CPF " + coop.getCpf()));
 		} else {
+			coop.setStatus(validaCpfService.validaCpf(coop.getCpf()));
 			return ResponseEntity.ok().body(coopRepository.save(coop));	
 		}
 	}
@@ -98,9 +102,10 @@ public class CooperadoServiceImpl implements CooperadoService{
 			retorno = "CPF não pode ser vazio";
 		} else if (!cooperado.getCpf().matches("\\d{11}")) {
 			retorno = "O CPF deve possuir apenas números e ter 11 caractéres";
-		} else if (!Validacoes.isCPF(cooperado.getCpf())) {
-			retorno = "O CPF informado não corresponde a um CPF válido";
 		}
+//		} else if (!Validacoes.isCPF(cooperado.getCpf())) {
+//			retorno = "O CPF informado não corresponde a um CPF válido";
+//		}
 		
 		if (!Validacoes.validaString(cooperado.getNome())) {
 			retorno = retorno + ((retorno.equals(""))? "" : ", ") + "O nome não pode ser vazio";

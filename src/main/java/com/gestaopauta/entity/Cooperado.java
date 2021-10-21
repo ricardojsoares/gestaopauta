@@ -59,6 +59,5 @@ public class Cooperado {
 	@PrePersist
 	public void PrePersist() {
 		setDataCadastro(LocalDate.now());
-		setStatus(EnumStatusCooperado.UNABLE_TO_VOTE);
 	}
 }
