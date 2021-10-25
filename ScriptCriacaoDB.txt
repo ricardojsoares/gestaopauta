@@ -25,7 +25,7 @@ CREATE TABLE `sessao_votacao` (
   `datahora_inicio` datetime DEFAULT NULL,
   `id_pauta` int NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_pauta_sassaovotacao` FOREIGN KEY (`id`) REFERENCES `pauta` (`id`)
+  FOREIGN KEY (`id`) REFERENCES `pauta` (`id`)
 );
 
 CREATE TABLE `voto` (
@@ -35,8 +35,6 @@ CREATE TABLE `voto` (
   `opcao` varchar(1) NOT NULL,
   `datahota_criacao` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_cooperado_sessao_idx` (`id_sessao_votacao`,`id_cooperado`),
-  KEY `fk_cooperado_idx` (`id_cooperado`) /*!80000 INVISIBLE */,
-  CONSTRAINT `fk_cooperado` FOREIGN KEY (`id_cooperado`) REFERENCES `cooperado` (`id`),
-  CONSTRAINT `fk_sessao_votacao` FOREIGN KEY (`id_sessao_votacao`) REFERENCES `sessao_votacao` (`id`)
+  FOREIGN KEY (`id_cooperado`) REFERENCES `cooperado` (`id`),
+  FOREIGN KEY (`id_sessao_votacao`) REFERENCES `sessao_votacao` (`id`)
 );

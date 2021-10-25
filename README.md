@@ -32,7 +32,7 @@ Foi implementada uma classe chamada **ValidaCpfServiceImpl** que realiza a comun
 * O resultado da votação precisa ser informado para o restante da plataforma, isso deve ser feito preferencialmente através de mensageria. Quando a sessão de votação fechar, poste uma mensagem com o resultado da votação.
 
 #####Resolução:
-Realizei algumas pesquisas, mas infelizmente não consegui realizar esta atividade a tempo.
+Consegui implementar o producer quando é realizado um voto, mas infelizmente não consegui realizar o consumer a tempo.
                     
 ####3. Performance
 * Imagine que sua aplicação possa ser usada em cenários que existam centenas de milhares de votos. Ela deve se comportar de maneira performática nesses cenários.

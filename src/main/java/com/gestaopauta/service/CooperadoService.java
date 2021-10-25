@@ -14,4 +14,6 @@ public interface CooperadoService {
 	public ResponseEntity<?> findStatusCooperadoByCpf(String cpf);
 	public ResponseEntity<Cooperado> habilitarParaVoto(long id);
 	public ResponseEntity<Cooperado> desabilitarParaVoto(long id);
+	public ResponseEntity<?> update(long id, Cooperado cooperado);
+	public ResponseEntity<?> delete(long id); 
 }

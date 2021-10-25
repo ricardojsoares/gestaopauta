@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.gestaopauta.entity.Cooperado;
@@ -22,15 +23,23 @@ import com.gestaopauta.resources.EnumStatusPauta;
 
 @Service
 public class VotoServiceImpl implements VotoService{
-
+	
+	private VotoRepository votoRepository;
+	private CooperadoRepository coopRepository;
+	private SessaoVotacaoRepository sessaoVotacaoRepository;
+	//private KafkaConfig kafkaConfig;
 	@Autowired
-	VotoRepository votoRepository;
+	KafkaTemplate<String, VotoResponseDto> kafkaTemplate;
+	
+	private static final String TOPIC = "voto-registrado";
 	
 	@Autowired
-	CooperadoRepository coopRepository;
-	
-	@Autowired
-	SessaoVotacaoRepository sessaoVotacaoRepository;
+	public VotoServiceImpl(VotoRepository votoRepository, CooperadoRepository coopRepository, SessaoVotacaoRepository sessaoVotacaoRepository) {
+		this.votoRepository = votoRepository;
+		this.coopRepository = coopRepository;
+		this.sessaoVotacaoRepository = sessaoVotacaoRepository;
+	//	this.kafkaConfig = kafkaConfig;
+	}
 	
 	@Override
 	public ResponseEntity<?> votar(VotoPostDto votoDto) {
@@ -71,6 +80,7 @@ public class VotoServiceImpl implements VotoService{
 		Voto votoRealizado = votoRepository.save(new Voto(votoDto.getOpcao(), cooperado.get(), sessaoVotacao.get()));
 		VotoResponseDto votoResponseDto = new VotoResponseDto(votoRealizado.getId(), votoRealizado.getDataHoraCriacao(), "Voto realizado com sucesso");
 
+		kafkaTemplate.send(TOPIC, votoResponseDto);
 		return ResponseEntity.ok().body(votoResponseDto);
 	}
 
