@@ -10,20 +10,21 @@ import com.gestaopauta.entity.Retorno;
 import com.gestaopauta.resources.EnumStatusCooperado;
 
 @Service
-public class ValidaCpfServiceImpl implements ValidaCpfService{
-	
+public class ValidaCpfServiceImpl implements ValidaCpfService {
+
 	@Override
 	public EnumStatusCooperado validaCpf(String Cpf) {
-		RestTemplate restTemplate = new RestTemplate();
-		
-		UriComponents uri = UriComponentsBuilder.newInstance()
-				.scheme("http")
-				.host("localhost:8080/rest/collection/")
-				.path("v1/validaCpf/" + Cpf)
-				.build();
-		
-		ResponseEntity<Retorno> retorno = restTemplate.getForEntity(uri.toUriString(), Retorno.class);
-		
-		return retorno.getBody().getStatus();
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+
+			UriComponents uri = UriComponentsBuilder.newInstance().scheme("http")
+					.host("localhost:8080/rest/collection/").path("v1/validaCpf/" + Cpf).build();
+
+			ResponseEntity<Retorno> retorno = restTemplate.getForEntity(uri.toUriString(), Retorno.class);
+
+			return retorno.getBody().getStatus();
+		} catch (Exception e) {
+			return EnumStatusCooperado.UNABLE_TO_VOTE;
+		}
 	}
 }
